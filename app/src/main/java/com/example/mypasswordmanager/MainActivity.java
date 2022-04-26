@@ -33,19 +33,15 @@ public class MainActivity extends AppCompatActivity {
         passwordDao = db.passwordDao();
 
         // write some passwords (async)
-        Log.i("executor", "Indide executor");
         Password p1 = new Password();
         p1.label = "label1";
         Password p2 = new Password();
         p2.label = "label2";
-        Log.i("executor", "Created passwords");
         mDisposable.add(passwordDao.insertAll(p1, p2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onDbUpdated));
-        Log.i("executor", "Gonna update UI");
         onDbUpdated();
-        Log.i("MainActivity", "on create end");
     }
 
     private void onDbUpdated() {
