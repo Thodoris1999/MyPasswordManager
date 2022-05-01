@@ -2,6 +2,7 @@ package com.example.mypasswordmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -60,5 +61,14 @@ public class MainActivity extends AppCompatActivity {
         }
         helloTextview.setText(labels.toString());
         Log.i("MainActivity", "Updated textview");
+    }
+
+    @Override
+    public void onBackPressed() {
+        // back press would normally return to authorize activity, instead exit app
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

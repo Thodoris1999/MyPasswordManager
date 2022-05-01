@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyPasswordManager</string>
+    <string name="enter_master_password">Enter master password</string>
+    <string name="authorization_button">Enter</string>
+    <string name="password_prompt_first_time_set">Set a master password for all account passwords</string>
+    <string name="authorization_button_first_time_set">save</string>
+    <string name="invalid_password_text">Invalid password</string>
 </resources>
