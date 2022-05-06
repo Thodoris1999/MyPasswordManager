@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyPasswordManager</string>
+    <string name="submit">add</string>
+    <string name="include_numbers"> Numbers</string>
+    <string name="include_uppercase"> Uppercase</string>
+    <string name="include_special_characters"> Special Characters</string>
+    <string name="include_letters"> Letters</string>
 </resources>
