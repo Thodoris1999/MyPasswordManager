@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    tools:context=".CreatePasswordActivity">
+
+    <TextView
+        android:id="@+id/select_create_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".CreatePasswordActivity" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_label"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Password name"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toTopOf="@id/spinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_website"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:hint="Website"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toTopOf="@id/spinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:hint="Password"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toTopOf="@id/spinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_length"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:hint="Password length"
+        app:layout_constraintTop_toTopOf="@id/spinner">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/include"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="80sp"
+        android:text="Include"
+        app:layout_constraintLeft_toLeftOf="@id/password_length"
+        app:layout_constraintTop_toTopOf="@id/password_length"
+        tools:context=".CreatePasswordActivity" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/include_numbers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="20sp"
+        android:buttonTint="@color/teal_700"
+        android:checked="true"
+        android:gravity="right|center"
+        android:layoutDirection="rtl"
+        android:text="@string/include_numbers"
+        app:layout_constraintLeft_toLeftOf="@id/password_length"
+        app:layout_constraintTop_toTopOf="@id/include" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/include_letters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="50sp"
+        android:buttonTint="@color/teal_700"
+        android:checked="true"
+        android:gravity="right|center"
+        android:layoutDirection="rtl"
+        android:text="@string/include_letters"
+        app:layout_constraintLeft_toLeftOf="@id/password_length"
+        app:layout_constraintTop_toTopOf="@id/include_numbers" />
+
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/include_uppercase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="50sp"
+        android:buttonTint="@color/teal_700"
+        android:checked="true"
+        android:gravity="right|center"
+        android:layoutDirection="rtl"
+        android:text="@string/include_uppercase"
+        app:layout_constraintLeft_toLeftOf="@id/password_length"
+        app:layout_constraintTop_toTopOf="@id/include_letters" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/include_special"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="50sp"
+        android:buttonTint="@color/teal_700"
+        android:checked="true"
+        android:gravity="right|center"
+        android:layoutDirection="rtl"
+        android:text="@string/include_special_characters"
+        app:layout_constraintLeft_toLeftOf="@id/password_length"
+        app:layout_constraintTop_toTopOf="@id/include_uppercase" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="@color/teal_700"
+        android:onClick="savePassword"
+        android:text="Save"
+        app:layout_constraintRight_toRightOf="@id/password"
+        app:layout_constraintTop_toTopOf="@id/select_create_mode"
+        tools:context=".CreatePasswordActivity" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">MyPasswordManager</string>
+
+    <string name="submit">add</string>
+    <string name="include_numbers"> Numbers</string>
+    <string name="include_uppercase"> Uppercase</string>
+    <string name="include_special_characters"> Special Characters</string>
+    <string name="include_letters"> Letters</string>
+
     <string name="enter_master_password">Enter master password</string>
     <string name="authorization_button">Enter</string>
     <string name="password_prompt_first_time_set">Set a master password for all account passwords</string>

@@ -20,9 +20,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".CreatePasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="false" />
     </application>
-
 </manifest>
