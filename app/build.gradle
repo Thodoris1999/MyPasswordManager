@@ -30,6 +30,9 @@ android {
 dependencies {
     def room_version = "2.4.2"
 
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-common:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"

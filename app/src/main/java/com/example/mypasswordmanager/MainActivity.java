@@ -2,6 +2,7 @@ package com.example.mypasswordmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -68,8 +69,5 @@ public class MainActivity extends AppCompatActivity {
         // when the floating button is clicked, user is prompted to the CreatePassword activity
         Intent Intent = new Intent(this, CreatePasswordActivity.class);
         startActivity(Intent);
-
     }
-
-
 }
