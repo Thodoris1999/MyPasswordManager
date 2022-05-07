@@ -1,5 +1,6 @@
 package com.example.mypasswordmanager;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
@@ -108,6 +109,10 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         passwordDao = db.passwordDao();
         p = new Password();
         generatePassword = false;
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void savePassword(View view) {

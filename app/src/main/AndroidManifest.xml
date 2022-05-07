@@ -20,10 +20,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreatePasswordActivity"
-            android:exported="true" />
-        <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".CreatePasswordActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="true" />
     </application>
 </manifest>
