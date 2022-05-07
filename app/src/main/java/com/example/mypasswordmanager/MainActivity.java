@@ -34,19 +34,11 @@ public class MainActivity extends AppCompatActivity {
         helloTextview.setText(mainMessage);
         PasswordDb db = PasswordDb.getDatabase(this);
         passwordDao = db.passwordDao();
-        // write some passwords (async)
-//        Password p1 = new Password();
-//        p1.label = "label1";
-//        Password p2 = new Password();
-//        p2.label = "label2";
-//        mDisposable.add(passwordDao.insertAll(p1, p2)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::onDbUpdated));
-        onDbUpdated();
+
+        loadPasswords();
     }
 
-    private void onDbUpdated() {
+    private void loadPasswords() {
         // read the passwords and display labels on textview
         mDisposable.add(passwordDao.getAll()
                 .subscribeOn(Schedulers.io())

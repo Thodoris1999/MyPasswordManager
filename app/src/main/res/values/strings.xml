@@ -12,4 +12,11 @@
     <string name="password_prompt_first_time_set">Set a master password for all account passwords</string>
     <string name="authorization_button_first_time_set">save</string>
     <string name="invalid_password_text">Invalid password</string>
+    <string name="password_creation_mode_prompt">Select password mode</string>
+    <string name="password_label_input">Password label</string>
+    <string name="website_input">Website</string>
+    <string name="password">Password</string>
+    <string name="password_length_input">Password length</string>
+    <string name="include_textview">Include</string>
+    <string name="save_button">save</string>
 </resources>

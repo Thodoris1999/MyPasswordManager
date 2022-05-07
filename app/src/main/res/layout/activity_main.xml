@@ -18,8 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MainActivity" />
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton3"
         android:layout_width="wrap_content"
@@ -33,6 +31,6 @@
         app:tint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add" />
-
+        app:srcCompat="@drawable/ic_baseline_add"
+        android:focusable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

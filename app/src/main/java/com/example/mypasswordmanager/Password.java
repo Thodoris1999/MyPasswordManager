@@ -30,6 +30,9 @@ public class Password {
     @ColumnInfo(name = "has_letters")
     public boolean hasLetters;
 
+    @ColumnInfo(name = "has_numbers")
+    public boolean hasNumbers;
+
     @ColumnInfo(name = "has_uppercase")
     public boolean hasUppercase;
 

@@ -12,8 +12,7 @@
         android:id="@+id/select_create_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,10 +20,9 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -40,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:hint="Password name"
+        android:hint="@string/password_label_input"
         app:endIconMode="clear_text"
         app:layout_constraintTop_toTopOf="@id/spinner">
 
@@ -56,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:hint="Website"
+        android:hint="@string/website_input"
         app:endIconMode="clear_text"
         app:layout_constraintTop_toTopOf="@id/spinner">
 
@@ -72,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:hint="Password"
+        android:hint="@string/password"
         app:endIconMode="clear_text"
         app:layout_constraintTop_toTopOf="@id/spinner">
 
@@ -89,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:hint="Password length"
+        android:hint="@string/password_length_input"
         app:layout_constraintTop_toTopOf="@id/spinner">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -103,9 +101,9 @@
         android:id="@+id/include"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8sp"
-        android:layout_marginTop="80sp"
-        android:text="Include"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="80dp"
+        android:text="@string/include_textview"
         app:layout_constraintLeft_toLeftOf="@id/password_length"
         app:layout_constraintTop_toTopOf="@id/password_length"
         tools:context=".CreatePasswordActivity" />
@@ -114,12 +112,10 @@
         android:id="@+id/include_numbers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8sp"
-        android:layout_marginTop="20sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:buttonTint="@color/teal_700"
         android:checked="true"
-        android:gravity="right|center"
-        android:layoutDirection="rtl"
         android:text="@string/include_numbers"
         app:layout_constraintLeft_toLeftOf="@id/password_length"
         app:layout_constraintTop_toTopOf="@id/include" />
@@ -128,12 +124,10 @@
         android:id="@+id/include_letters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8sp"
-        android:layout_marginTop="50sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
         android:buttonTint="@color/teal_700"
         android:checked="true"
-        android:gravity="right|center"
-        android:layoutDirection="rtl"
         android:text="@string/include_letters"
         app:layout_constraintLeft_toLeftOf="@id/password_length"
         app:layout_constraintTop_toTopOf="@id/include_numbers" />
@@ -143,12 +137,10 @@
         android:id="@+id/include_uppercase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8sp"
-        android:layout_marginTop="50sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
         android:buttonTint="@color/teal_700"
         android:checked="true"
-        android:gravity="right|center"
-        android:layoutDirection="rtl"
         android:text="@string/include_uppercase"
         app:layout_constraintLeft_toLeftOf="@id/password_length"
         app:layout_constraintTop_toTopOf="@id/include_letters" />
@@ -157,12 +149,10 @@
         android:id="@+id/include_special"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8sp"
-        android:layout_marginTop="50sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
         android:buttonTint="@color/teal_700"
         android:checked="true"
-        android:gravity="right|center"
-        android:layoutDirection="rtl"
         android:text="@string/include_special_characters"
         app:layout_constraintLeft_toLeftOf="@id/password_length"
         app:layout_constraintTop_toTopOf="@id/include_uppercase" />
@@ -171,14 +161,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="@color/teal_700"
         android:onClick="savePassword"
-        android:text="Save"
+        android:text="@string/save_button"
         app:layout_constraintRight_toRightOf="@id/password"
         app:layout_constraintTop_toTopOf="@id/select_create_mode"
         tools:context=".CreatePasswordActivity" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
