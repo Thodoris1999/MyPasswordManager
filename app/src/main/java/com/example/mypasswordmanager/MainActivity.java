@@ -1,40 +1,52 @@
 package com.example.mypasswordmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-import android.content.Intent;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.ArrayList;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
-    PasswordDao passwordDao;
-    TextView helloTextview;
-    String mainMessage = "Hello World";
+    private PasswordDao passwordDao;
 
     // for making asynchronous calls to DB
     private final CompositeDisposable mDisposable = new CompositeDisposable();
+
+    private RecyclerView passwordsRV;
+
+    private List<Password> passwords;
+    private PasswordListAdapter passwordsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        helloTextview = findViewById(R.id.hello_textview);
-        helloTextview.setText(mainMessage);
+
         PasswordDb db = PasswordDb.getDatabase(this);
         passwordDao = db.passwordDao();
+        passwordsRV = findViewById(R.id.passwordsRV);
+        passwords = new ArrayList<>();
 
+        // initializing adapter class and passing arraylist to it
+        passwordsAdapter = new PasswordListAdapter(this, passwords);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        passwordsRV.setLayoutManager(linearLayoutManager);
+        passwordsRV.setAdapter(passwordsAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadPasswords();
     }
 
@@ -47,13 +59,10 @@ public class MainActivity extends AppCompatActivity {
                         throwable -> Log.e("MainActivity", "Failed to read data")));
     }
 
-    private void onbData(List<Password> passwords) {
-        StringBuilder labels = new StringBuilder();
-        for (Password password : passwords) {
-            labels.append(password.label).append(":");
-            labels.append(password.password).append(" ");
-        }
-        helloTextview.setText(labels.toString());
+    private void onbData(List<Password> newPasswords) {
+        this.passwords.clear();
+        this.passwords.addAll(newPasswords);
+        passwordsAdapter.notifyDataSetChanged();
         Log.i("MainActivity", "Updated textview");
     }
 

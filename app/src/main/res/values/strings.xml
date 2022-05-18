@@ -19,4 +19,6 @@
     <string name="password_length_input">Password length</string>
     <string name="include_textview">Include</string>
     <string name="save_button">save</string>
+    <string name="edit_password">edit</string>
+    <string name="delete_password">delete</string>
 </resources>
