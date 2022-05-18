@@ -1,58 +1,88 @@
 package com.example.mypasswordmanager;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
 
-public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapter.Viewholder> {
+import java.util.List;
 
-    private Context context;
-    private ArrayList<PasswordData> passwordArrayList;
+public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapter.ViewHolder> {
+
+    private final Context context;
+    private final List<Password> passwordList;
 
     // Constructor
-    public PasswordListAdapter(Context context, ArrayList<PasswordData> passwordArrayList) {
+    public PasswordListAdapter(Context context, List<Password> passwordList) {
         this.context = context;
-        this.passwordArrayList = passwordArrayList;
+        this.passwordList = passwordList;
     }
 
     @NonNull
     @Override
-    public PasswordListAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // to inflate the layout for each item of recycler view.
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.passwords_lisf, parent, false);
-        return new Viewholder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.passwords_list, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PasswordListAdapter.Viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // to set data to textview  of each card layout
-        PasswordData model = passwordArrayList.get(position);
-        holder.label.setText(model.getLabel());
-        holder.password.setText(model.getPassword());
-        holder.website.setText(model.getWebsite());
+        Password password = passwordList.get(position);
+        holder.label.setText(password.label);
+        holder.website.setText(password.website);
+        holder.copyButton.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("password", password.password);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(context, "Copied password to clipboard!", Toast.LENGTH_SHORT).show();
+        });
+        holder.moreItemsButton.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(context, holder.moreItemsButton);
+            popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.edit_password:
+                        // TODO: Edit password
+                        return true;
+                    case R.id.delete_password:
+                        // TODO: Delete password
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            popup.inflate(R.menu.password_more_actions_menu);
+            popup.show();
+        });
     }
 
     @Override
     public int getItemCount() {
-        // this method is used for showing number
-        // of card items in recycler view.
-        return passwordArrayList.size();
+        return passwordList.size();
     }
 
     // View holder class for initializing of views
-    public class Viewholder extends RecyclerView.ViewHolder {
-        private TextView label, password, website;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView label;
+        private final TextView website;
+        private final ImageButton copyButton, moreItemsButton;
 
-        public Viewholder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             website = itemView.findViewById(R.id.website);
             label = itemView.findViewById(R.id.label);
-            password = itemView.findViewById(R.id.password);
+            moreItemsButton = itemView.findViewById(R.id.more_menu);
+            copyButton = itemView.findViewById(R.id.copy_button);
         }
     }
 }
