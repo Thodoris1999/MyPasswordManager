@@ -36,13 +36,18 @@ public class MainActivity extends AppCompatActivity {
         passwordDao = db.passwordDao();
         passwordsRV = findViewById(R.id.passwordsRV);
         passwords = new ArrayList<>();
-        loadPasswords();
 
         // initializing adapter class and passing arraylist to it
         passwordsAdapter = new PasswordListAdapter(this, passwords);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         passwordsRV.setLayoutManager(linearLayoutManager);
         passwordsRV.setAdapter(passwordsAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadPasswords();
     }
 
     private void loadPasswords() {
