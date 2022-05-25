@@ -3,11 +3,16 @@ package com.example.mypasswordmanager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.AdapterView;
@@ -123,6 +128,11 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         p.hasNumbers = numbersCheckbox.isChecked();
         p.hasUppercase = uppercaseCheckbox.isChecked();
         p.hasSpecialCharacters = specialCharsCheckbox.isChecked();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
+        df.setTimeZone(tz);
+        p.lastUpdate = df.format(Calendar.getInstance().getTime());
+        Log.d("CreatePasswordActivity", "Password UTC ISO 8601 date: " + p.lastUpdate);
         if (generatePassword) {
             if(!p.hasLetters && !p.hasNumbers && !p.hasUppercase && !p.hasSpecialCharacters){
                 Toast.makeText(getApplicationContext(), "Please select one of the Include options!", Toast.LENGTH_LONG).show();

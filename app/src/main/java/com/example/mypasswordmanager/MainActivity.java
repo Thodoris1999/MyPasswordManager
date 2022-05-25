@@ -3,6 +3,11 @@ package com.example.mypasswordmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import android.view.View;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -42,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         passwordsRV.setLayoutManager(linearLayoutManager);
         passwordsRV.setAdapter(passwordsAdapter);
+
+        // schedule periodic breach checks with Have I been pwned API
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .build();
+        PeriodicWorkRequest pwnCheckRequest = new PeriodicWorkRequest.Builder(PwnCheckWorker.class, 12, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("pwnCheckRequest",
+                ExistingPeriodicWorkPolicy.KEEP, pwnCheckRequest);
     }
 
     @Override

@@ -27,6 +27,9 @@ public class Password {
     @ColumnInfo(name = "breach_info")
     public boolean breachInfo;
 
+    @ColumnInfo(name = "lastUpdate")
+    public String lastUpdate;
+
     @ColumnInfo(name = "has_letters")
     public boolean hasLetters;
 

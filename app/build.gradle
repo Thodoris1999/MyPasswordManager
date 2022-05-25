@@ -29,6 +29,12 @@ android {
 
 dependencies {
     def room_version = "2.4.2"
+    def work_version = "2.7.1"
+
+    implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-multiprocess:$work_version"
+    implementation "androidx.work:work-rxjava3:$work_version"
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
 
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
@@ -39,11 +45,11 @@ dependencies {
     implementation "androidx.room:room-rxjava3:$room_version"
 
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.2'
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
