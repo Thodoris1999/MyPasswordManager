@@ -3,6 +3,7 @@ package com.example.mypasswordmanager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,10 +54,12 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
             popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.edit_password:
-                        // TODO: Edit password
+                        if (context instanceof MainActivity) {
+                            ((MainActivity)context).editPassword(view, password);
+                        }
                         return true;
                     case R.id.delete_password:
-                        // TODO: Delete password
+                        ((MainActivity)context).deletePassword(view, password);
                         return true;
                     default:
                         return false;

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -70,5 +71,24 @@ public class MainActivity extends AppCompatActivity {
         // when the floating button is clicked, user is prompted to the CreatePassword activity
         Intent Intent = new Intent(this, CreatePasswordActivity.class);
         startActivity(Intent);
+    }
+
+    public void editPassword(View view, Password password) {
+        // when the edit button is clicked, user is prompted to the CreatePassword activity
+        Intent Intent = new Intent(this, CreatePasswordActivity.class);
+        // send details of the password to be edited to the CreatePasswordActivity
+        Intent.putExtra("label", password.label);
+        Intent.putExtra("password", password.password);
+        Intent.putExtra("website", password.website);
+        Intent.putExtra("id", Integer.toString(password.id));
+        startActivity(Intent);
+    }
+
+    public void deletePassword(View view, Password password){
+        mDisposable.add(passwordDao.delete(password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe());
+        Toast.makeText(getApplicationContext(), "Password deleted!", Toast.LENGTH_SHORT).show();
     }
 }

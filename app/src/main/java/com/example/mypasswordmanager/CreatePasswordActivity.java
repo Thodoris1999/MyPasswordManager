@@ -3,12 +3,16 @@ package com.example.mypasswordmanager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -25,6 +29,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class CreatePasswordActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
     private TextView includeTextview;
+    private Button saveButton;
     private TextInputLayout nameInput;
     private TextInputLayout passwordInput;
     private TextInputLayout lengthInput;
@@ -33,14 +38,15 @@ public class CreatePasswordActivity extends AppCompatActivity implements
     private MaterialCheckBox lettersCheckbox;
     private MaterialCheckBox uppercaseCheckbox;
     private MaterialCheckBox specialCharsCheckbox;
-
+    private List<Password> passwords;
     private final String[] create_mode = {"Save my password", "Generate password"};
     private PasswordDao passwordDao;
     private Password p;
     private boolean generatePassword;
+    Boolean editMode;
+    int passwordID ;
     // for making asynchronous calls to DB
     private final CompositeDisposable mDisposable = new CompositeDisposable();
-
     // functions needed for new password mode selection (save/generate) on drop-down menu
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -76,14 +82,20 @@ public class CreatePasswordActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        loadPasswords();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
-
         Spinner spin = (Spinner) findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
         TextView createModeTextview = findViewById(R.id.select_create_mode);
         createModeTextview.setText(R.string.password_creation_mode_prompt);
+        saveButton=(Button)findViewById(R.id.button);
         includeTextview = findViewById(R.id.include);
         nameInput = findViewById(R.id.password_label);
         passwordInput = findViewById(R.id.password);
@@ -99,7 +111,28 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         specialCharsCheckbox.setVisibility(View.GONE);
         lettersCheckbox.setVisibility(View.GONE);
         includeTextview.setVisibility(View.GONE);
-        //Creating the ArrayAdapter instance having the country list
+        lengthInput.setVisibility(View.GONE);
+        editMode = false;
+        passwords = new ArrayList<>();
+        // edit password mode, get password details to be updated, sent from intent
+        Intent intent = getIntent();
+        String password = intent.getStringExtra("password");
+        String label = intent.getStringExtra("label");
+        String website = intent.getStringExtra("website");
+        String id = intent.getStringExtra("id");
+        if(password != null && label != null && website != null && id!= null){
+            saveButton.setText("UPDATE");
+            editMode = true;
+            // hide "select save/generate mode" spinner
+            spin.setVisibility(View.GONE);
+            createModeTextview.setVisibility(View.GONE);
+            // fill text fields with password data to be edited
+            passwordID = Integer.parseInt(id);
+            nameInput.getEditText().setText(label);
+            passwordInput.getEditText().setText(password);
+            websiteInput.getEditText().setText(website);
+        }
+        //Creating the ArrayAdapter instance for "select save/generate mode" spinner
         ArrayAdapter<String> aa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, create_mode);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -123,6 +156,26 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         p.hasNumbers = numbersCheckbox.isChecked();
         p.hasUppercase = uppercaseCheckbox.isChecked();
         p.hasSpecialCharacters = specialCharsCheckbox.isChecked();
+        // edit password mode
+        if (editMode){
+            // search which password to update in all passwords in the db and find by id
+            Password password_to_update = new Password();
+            for(Password password:passwords){
+                if(password.id == passwordID)
+                    password_to_update = password;
+            }
+            password_to_update.label = nameInput.getEditText().getText().toString();
+            password_to_update.website = websiteInput.getEditText().getText().toString();
+            password_to_update.password = passwordInput.getEditText().getText().toString();
+            mDisposable.add(passwordDao.update(password_to_update)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe());
+            Toast.makeText(getApplicationContext(), "Password updated!", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        // generate password mode
         if (generatePassword) {
             if(!p.hasLetters && !p.hasNumbers && !p.hasUppercase && !p.hasSpecialCharacters){
                 Toast.makeText(getApplicationContext(), "Please select one of the Include options!", Toast.LENGTH_LONG).show();
@@ -137,6 +190,7 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         } else {
             p.password = passwordInput.getEditText().getText().toString();
         }
+        // save password mode (default)
         mDisposable.add(passwordDao.insert(p)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -165,5 +219,19 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         for (int i = 0; i < length; i++)
             generatedPassword.append(characterOptions.charAt(rnd.nextInt(characterOptions.length())));
         return generatedPassword.toString();
+    }
+
+    // get all passwords from db so that we can find the password to update by its id
+    private void loadPasswords() {
+        mDisposable.add(passwordDao.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onbData,
+                        throwable -> Log.e("MainActivity", "Failed to read data")));
+    }
+
+    private void onbData(List<Password> newPasswords) {
+        this.passwords.clear();
+        this.passwords.addAll(newPasswords);
     }
 }
