@@ -49,6 +49,12 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
             clipboard.setPrimaryClip(clip);
             Toast.makeText(context, "Copied password to clipboard!", Toast.LENGTH_SHORT).show();
         });
+        if (password.wasPwned) {
+            holder.warningButton.setVisibility(View.VISIBLE);
+        }
+        holder.warningButton.setOnClickListener(view ->
+                Toast.makeText(context, "Password must be updated due to security risk",
+                Toast.LENGTH_LONG).show());
         holder.moreItemsButton.setOnClickListener(view -> {
             PopupMenu popup = new PopupMenu(context, holder.moreItemsButton);
             popup.setOnMenuItemClickListener((PopupMenu.OnMenuItemClickListener) menuItem -> {
@@ -79,7 +85,7 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView label;
         private final TextView website;
-        private final ImageButton copyButton, moreItemsButton;
+        private final ImageButton copyButton, moreItemsButton, warningButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +93,7 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
             label = itemView.findViewById(R.id.label);
             moreItemsButton = itemView.findViewById(R.id.more_menu);
             copyButton = itemView.findViewById(R.id.copy_button);
+            warningButton = itemView.findViewById(R.id.warning_drawable);
         }
     }
 }

@@ -3,10 +3,14 @@ package com.example.mypasswordmanager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -157,6 +161,14 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         p.hasNumbers = numbersCheckbox.isChecked();
         p.hasUppercase = uppercaseCheckbox.isChecked();
         p.hasSpecialCharacters = specialCharsCheckbox.isChecked();
+
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
+        df.setTimeZone(tz);
+        p.lastUpdate = df.format(Calendar.getInstance().getTime());
+        p.wasPwned = false;
+        Log.d("CreatePasswordActivity", "Password UTC ISO 8601 date: " + p.lastUpdate);
+
         // edit password mode
         if (editMode){
             // search which password to update in all passwords in the db and find by id
