@@ -132,6 +132,7 @@ public class CreatePasswordActivity extends AppCompatActivity implements
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
         df.setTimeZone(tz);
         p.lastUpdate = df.format(Calendar.getInstance().getTime());
+        p.wasPwned = false;
         Log.d("CreatePasswordActivity", "Password UTC ISO 8601 date: " + p.lastUpdate);
         if (generatePassword) {
             if(!p.hasLetters && !p.hasNumbers && !p.hasUppercase && !p.hasSpecialCharacters){

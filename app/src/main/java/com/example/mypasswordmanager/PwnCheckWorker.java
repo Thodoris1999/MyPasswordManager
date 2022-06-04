@@ -52,13 +52,15 @@ public class PwnCheckWorker extends Worker {
             for (Password password : passwords) {
                 for (int i = 0; i < breachedDomains.length; i++) {
                     String breachedDomain = breachedDomains[i];
+                    // website URL to domain conversion
                     String passwordHost = new URI(password.website).getHost();
                     String passwordDomain = passwordHost.startsWith("www.") ? passwordHost.substring(4) : passwordHost;
                     if (breachedDomain.equals(passwordDomain)) {
                         String date = breachedDates[i];
                         // ISO 8601 timestamps can be compared lexicographically
                         if (password.lastUpdate.compareTo(date) < 0) {
-                            // TODO: set pwned
+                            password.wasPwned = true;
+                            passwordDao.update(password).blockingAwait();
                         }
                     }
                 }
