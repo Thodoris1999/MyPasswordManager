@@ -43,11 +43,12 @@ public class CreatePasswordActivity extends AppCompatActivity implements
     private PasswordDao passwordDao;
     private Password p;
     private boolean generatePassword;
-    Boolean editMode;
-    int passwordID ;
+    private boolean editMode;
+    private int passwordID ;
     // for making asynchronous calls to DB
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     // functions needed for new password mode selection (save/generate) on drop-down menu
+
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         if (position == 0) {
