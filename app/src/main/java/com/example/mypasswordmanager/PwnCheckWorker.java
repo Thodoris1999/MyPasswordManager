@@ -3,6 +3,7 @@ package com.example.mypasswordmanager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -60,12 +61,20 @@ public class PwnCheckWorker extends Worker {
                 for (int i = 0; i < breachedDomains.length; i++) {
                     String breachedDomain = breachedDomains[i];
                     // website URL to domain conversion
-                    String passwordHost = new URI(password.website).getHost();
-                    String passwordDomain = passwordHost.startsWith("www.") ? passwordHost.substring(4) : passwordHost;
+                    String passwordDomain;
+                    try {
+                        String prefix = password.website.startsWith("https") ? "" : "https://";
+                        String passwordHost = new URI(prefix + password.website).getHost();
+                        passwordDomain = passwordHost.startsWith("www.") ? passwordHost.substring(4) : passwordHost;
+                    } catch (URISyntaxException | NullPointerException e) {
+                        Log.d("PwnWorker", e.getMessage());
+                        continue;
+                    }
                     if (breachedDomain.equals(passwordDomain)) {
                         String date = breachedDates[i];
                         // ISO 8601 timestamps can be compared lexicographically
                         if (password.lastUpdate.compareTo(date) < 0) {
+                            // breach detected!
                             password.wasPwned = true;
                             passwordDao.update(password).blockingAwait();
 
@@ -75,6 +84,7 @@ public class PwnCheckWorker extends Worker {
 
                             // define notification
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MainActivity.BREACH_CHANNEL_ID)
+                                    .setSmallIcon(R.drawable.ic_baseline_error_red_24)
                                     .setContentTitle(context.getString(R.string.breach_notification_title))
                                     .setContentText(context.getString(R.string.breach_notification_short_text))
                                     .setStyle(new NotificationCompat.BigTextStyle()
@@ -91,7 +101,7 @@ public class PwnCheckWorker extends Worker {
             }
 
             return Result.success();
-        } catch (IOException | JSONException | URISyntaxException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
             return Result.failure();
         }

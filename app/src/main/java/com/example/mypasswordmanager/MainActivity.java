@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -64,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("pwnCheckRequest",
                 ExistingPeriodicWorkPolicy.KEEP, pwnCheckRequest);
+
+        // For debugging breach detection
+        /*WorkRequest pwnCheckDebugRequest =
+                new OneTimeWorkRequest.Builder(PwnCheckWorker.class)
+                        .build();
+        WorkManager.getInstance(this).enqueue(pwnCheckDebugRequest);*/
 
         // create notification channel (Oreo)
         createNotificationChannel();

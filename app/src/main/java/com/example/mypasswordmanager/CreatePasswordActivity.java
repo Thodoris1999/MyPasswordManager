@@ -180,6 +180,8 @@ public class CreatePasswordActivity extends AppCompatActivity implements
             password_to_update.label = nameInput.getEditText().getText().toString();
             password_to_update.website = websiteInput.getEditText().getText().toString();
             password_to_update.password = passwordInput.getEditText().getText().toString();
+            password_to_update.lastUpdate = df.format(Calendar.getInstance().getTime());
+            password_to_update.wasPwned = false;
             mDisposable.add(passwordDao.update(password_to_update)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
