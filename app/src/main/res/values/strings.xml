@@ -21,4 +21,8 @@
     <string name="save_button">save</string>
     <string name="edit_password">edit</string>
     <string name="delete_password">delete</string>
+    <string name="breach_notification_title">Account vulnerability detected</string>
+    <string name="breach_notification_short_text">Please update your password to ensure your security.</string>
+    <string name="breach_channel_name">Breach detection channel</string>
+    <string name="channel_description">Notifies you when a data breach on an account you have is detected</string>
 </resources>

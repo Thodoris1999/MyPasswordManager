@@ -1,8 +1,12 @@
 package com.example.mypasswordmanager;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -21,6 +25,8 @@ import okhttp3.Response;
 
 public class PwnCheckWorker extends Worker {
     private final Context context;
+    private final String HIBP_API = "https://haveibeenpwned.com/api/v3/breaches";
+
     public PwnCheckWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
@@ -29,7 +35,6 @@ public class PwnCheckWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String HIBP_API = "https://haveibeenpwned.com/api/v3/breaches";
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(HIBP_API)
@@ -40,9 +45,11 @@ public class PwnCheckWorker extends Worker {
             JSONArray body = new JSONArray(bodyString);
             String[] breachedDomains = new String[body.length()];
             String[] breachedDates = new String[body.length()];
+            String[] descriptions = new String[body.length()];
             for (int i = 0; i < body.length(); i++) {
                 breachedDomains[i] = body.getJSONObject(i).getString("Domain");
                 breachedDates[i] = body.getJSONObject(i).getString("AddedDate");
+                descriptions[i] = body.getJSONObject(i).getString("Description");
             }
 
             // Check if there is a password that was breached more recently than its last edit
@@ -61,6 +68,23 @@ public class PwnCheckWorker extends Worker {
                         if (password.lastUpdate.compareTo(date) < 0) {
                             password.wasPwned = true;
                             passwordDao.update(password).blockingAwait();
+
+                            // Create an explicit intent for an Activity in your app
+                            Intent intent = new Intent(context, AuthorizationActivity.class);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                            // define notification
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MainActivity.BREACH_CHANNEL_ID)
+                                    .setContentTitle(context.getString(R.string.breach_notification_title))
+                                    .setContentText(context.getString(R.string.breach_notification_short_text))
+                                    .setStyle(new NotificationCompat.BigTextStyle()
+                                            .bigText(descriptions[i]))
+                                    .setContentIntent(pendingIntent)
+                                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                                    .setAutoCancel(true);
+
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                            notificationManager.notify(i, builder.build());
                         }
                     }
                 }

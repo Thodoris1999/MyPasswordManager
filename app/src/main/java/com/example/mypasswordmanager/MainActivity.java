@@ -9,7 +9,10 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Password> passwords;
     private PasswordListAdapter passwordsAdapter;
+
+    public static final String BREACH_CHANNEL_ID = "breach-notification-channel-id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("pwnCheckRequest",
                 ExistingPeriodicWorkPolicy.KEEP, pwnCheckRequest);
+
+        // create notification channel (Oreo)
+        createNotificationChannel();
     }
 
     @Override
@@ -106,5 +114,20 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe());
         Toast.makeText(getApplicationContext(), "Password deleted!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.breach_channel_name);
+            String description = getString(R.string.channel_description);
+            NotificationChannel channel = new NotificationChannel(BREACH_CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
